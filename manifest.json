@@ -1,0 +1,17 @@
+﻿{
+	"name": "DicPlus",
+	"version": "0.2.2",
+	"manifest_version": 2,
+	"description": "편리한 영어사전 이용을 위한 매크로 프로그램",
+	"content_scripts": [
+		{
+		"matches": ["http://endic.naver.com/*", "http://www.ozdic.com/*", "http://thesaurus.com/*"],
+		"js": ["jquery-2.1.0.min.js", "dicplus.js"]
+		}
+	],
+	"background": {
+		"scripts" : ["background.js"]
+	},
+	"web_accessible_resources": ["jquery-2.0.3.min.map"],
+	"permissions": ["tabs", "storage", "contextMenus"]
+}
