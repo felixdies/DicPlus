@@ -95,13 +95,16 @@ function set_Ozdic_listener(){
 	});
 	
 	$("p:not(.word)").each(function(){
-		$(this).width(800);
-		
 		var $html = $(this).html();
+		
+		$html = $html.replace(/<sup>(\s[^1])/g, "<br/><sup>$1");
 		$html = $html.replace(/<b>/g, "<br/><b>");
 		$html = $html.replace(/\|/g, "");
 		$html = $html.replace(/<i>/g, "<br/><i>" + tab);
+
 		$(this).html($html);
+		
+		$(this).width(800);
 	});
 	
 	$(document).keydown(function(event){

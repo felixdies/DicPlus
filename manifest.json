@@ -1,6 +1,6 @@
 ﻿{
 	"name": "DicPlus",
-	"version": "0.2.3",
+	"version": "0.2.4",
 	"manifest_version": 2,
 	"description": "편리한 영어사전 이용을 위한 매크로 프로그램",
 	"content_scripts": [
