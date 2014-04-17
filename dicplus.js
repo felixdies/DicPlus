@@ -85,10 +85,12 @@ function set_Naver_endic_listener(){
 }
 
 function set_Ozdic_listener(){
+	tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	
 	// seperate lines
 	$("i").each(function(){
 		var $html = $(this).html();
-		$html = $html.replace(/\./g, ".&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+		$html = $html.replace(/\.\s+(\w)/g, ".<br/>" + tab + "$1");
 		$(this).html($html);
 	});
 	
@@ -98,7 +100,7 @@ function set_Ozdic_listener(){
 		var $html = $(this).html();
 		$html = $html.replace(/<b>/g, "<br/><b>");
 		$html = $html.replace(/\|/g, "");
-		$html = $html.replace(/<i>/g, "<br/><i>");
+		$html = $html.replace(/<i>/g, "<br/><i>" + tab);
 		$(this).html($html);
 	});
 	
