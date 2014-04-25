@@ -65,26 +65,28 @@ function set_Naver_endic_listener(){
 }
 
 function set_Ozdic_listener(){
-	tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	var tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 	
-	// seperate lines
-	$("i").each(function(){
-		var $html = $(this).html();
-		$html = $html.replace(/\.\s+(\w)/g, ".<br/>" + tab + "$1");
-		$(this).html($html);
-	});
-	
-	$("p:not(.word)").each(function(){
-		var $html = $(this).html();
+	$(document).ready(function(){
+		// seperate lines
+		$("i").each(function(){
+			var $html = $(this).html();
+			$html = $html.replace(/\.\s+(\w)/g, ".<br/>" + tab + "$1");
+			$(this).html($html);
+		});
 		
-		$html = $html.replace(/<sup>(\s[^1])/g, "<br/><sup>$1");
-		$html = $html.replace(/<b>/g, "<br/><b>");
-		$html = $html.replace(/\|/g, "");
-		$html = $html.replace(/<i>/g, "<br/><i>" + tab);
+		$("p:not(.word)").each(function(){
+			var $html = $(this).html();
+			
+			$html = $html.replace(/<sup>(\s[^1])/g, "<br/><sup>$1");
+			$html = $html.replace(/<b>/g, "<br/><b>");
+			$html = $html.replace(/\|/g, "");
+			$html = $html.replace(/<i>/g, "<br/><i>" + tab);
 
-		$(this).html($html);
-		
-		$(this).width(700);
+			$(this).html($html);
+			
+			$(this).width(700);
+		});
 	});
 	
 	$(document).keydown(function(event){
@@ -110,10 +112,12 @@ function set_Ozdic_listener(){
 function set_Thesaurus_listener() {
 	
 	// hide ads
-	$(document).find('div.banner').each(function(){
-			$(this).hide();
-		});
-	$(document).find('section.promo-top').css("min-height", "1px");
+	$(document).ready(function(){
+		$(document).find('div.banner').each(function(){
+				$(this).hide();
+			});
+		$(document).find('section.promo-top').css("min-height", "1px");
+	});
 	
 	$(document).keydown(function(event){
 		if (event.shiftKey){}
