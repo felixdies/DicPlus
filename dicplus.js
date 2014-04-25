@@ -48,12 +48,12 @@ function set_Naver_endic_listener(){
 			{
 				// alt + 1,2,3,4,5 : 전체,단어/숙어,본문,예문,유의어/반의어
 				case 49: case 50: case 51: case 52: case 53: 
-				var num = event.keyCode - 48;
-				var href = $(document).find('li.tx_depth' + num).find('a').attr('href');
-				
-				window.location.href = href;
-				event.preventDefault();
-				break;
+					var num = event.keyCode - 48;
+					var href = $(document).find('li.tx_depth' + num).find('a').attr('href');
+					
+					window.location.href = href;
+					event.preventDefault();
+					break;
 				
 				// alt + t : 테스트
 				case 84:  
