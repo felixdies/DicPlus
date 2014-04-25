@@ -26,47 +26,18 @@ function set_Naver_endic_listener(){
 	$(document).keydown(function(event){
 
 		if (event.shiftKey && event.altKey){
-			switch(event.keyCode)
-			{
-				// shift + alt + 1 : 전체
-				case 49:
-				$($(document).find('li.tx_depth1')).trigger('click');
-				lg("?");
-				break;
-				
-				// shift + alt + 2 : 단어/숙어
-				case 50:
-				$(document).find('li.tx_depth2').children().trigger('click');
-				break;
-				
-				// shift + alt + 3 : 본문
-				case 51:
-				$(document).find('li.tx_depth3').children().trigger('click');
-				break;
-				
-				// shift + alt + 4 : 예문
-				case 52:
-				$(document).find('li.tx_depth4').trigger('click');
-				break;
-				
-				// shift + alt + 5 : 유의어/반의어
-				case 53:
-				$(document).find('li.tx_depth5').trigger('click');
-				break;
-				
-			}
 		}
-		
 		else if (event.shiftKey){
 			switch(event.keyCode)
 			{
 				// shift + 1,2,3,4,5	: n 번째 단어 선택
 				case 49: case 50: case 51: case 52: case 53: 
-					var num = event.keyCode - 49;	// charcode(49)="1"
+					var num = event.keyCode - 49;
 					var $list = $(document).find('dl.list_e2').first();
 					var $words = $list.find('dt').children('.fnt_e30');
+					var href = $words.eq(num).children().attr('href');
 					
-					$words.eq(num).children().children().trigger('click');
+					window.location.href = href;
 					event.preventDefault();
 					
 					break;
@@ -75,6 +46,15 @@ function set_Naver_endic_listener(){
 		else if (event.altKey){
 			switch(event.keyCode)
 			{
+				// alt + 1,2,3,4,5 : 전체,단어/숙어,본문,예문,유의어/반의어
+				case 49: case 50: case 51: case 52: case 53: 
+				var num = event.keyCode - 48;
+				var href = $(document).find('li.tx_depth' + num).find('a').attr('href');
+				
+				window.location.href = href;
+				event.preventDefault();
+				break;
+				
 				// alt + t : 테스트
 				case 84:  
 					test();
@@ -104,7 +84,7 @@ function set_Ozdic_listener(){
 
 		$(this).html($html);
 		
-		$(this).width(800);
+		$(this).width(700);
 	});
 	
 	$(document).keydown(function(event){
@@ -158,7 +138,7 @@ function set_Thesaurus_listener() {
 			$(this).hide();
 		});
 	$(document).find('section.promo-top').css("min-height", "1px");
-
+	
 	$(document).keydown(function(event){
 		if (event.shiftKey){
 			switch(event.keyCode)

@@ -3,6 +3,9 @@
 	"version": "0.2.4",
 	"manifest_version": 2,
 	"description": "편리한 영어사전 이용을 위한 매크로 프로그램",
+	"icons": {
+		"128": "./dicplus_icon_128.png"
+	},
 	"content_scripts": [
 		{
 		"matches": ["http://endic.naver.com/*", "http://www.ozdic.com/*", "http://thesaurus.com/*"],
