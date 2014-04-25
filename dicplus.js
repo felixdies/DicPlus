@@ -89,37 +89,13 @@ function set_Ozdic_listener(){
 	
 	$(document).keydown(function(event){
 		
-		if (event.shiftKey && event.altKey){
-		}
+		if (event.shiftKey && event.altKey){}
 		
-		else if (event.shiftKey){
-			switch(event.keyCode)
-			{
-				// shift + 1,2,3,4,5	: n 번째 단어 선택
-				case 49: case 50: case 51: case 52: case 53: 
-					var num = event.keyCode - 49;	// charcode(49)="1"
-					var $list = $(document).find('dl.list_e2').first();
-					var $words = $list.find('dt').children('.fnt_e30');
-					
-					$words.eq(num).children().children().trigger('click');
-					event.preventDefault();
-					
-					break;
-			}
-		}
+		else if (event.shiftKey){}
 		
-		else if (event.altKey){
-			switch(event.keyCode)
-			{
-				// alt + t : 테스트
-				case 84:  
-					test();
-					break; 
-			}
-		}
+		else if (event.altKey){}
 		
-		else if (event.ctrlKey) {
-		}
+		else if (event.ctrlKey) {}
 		
 		else {	// alt, ctrl, or shift key is not pressed.
 		
@@ -140,34 +116,11 @@ function set_Thesaurus_listener() {
 	$(document).find('section.promo-top').css("min-height", "1px");
 	
 	$(document).keydown(function(event){
-		if (event.shiftKey){
-			switch(event.keyCode)
-			{
-				// shift + 1,2,3,4,5	: n 번째 단어 선택
-				case 49: case 50: case 51: case 52: case 53: 
-					var num = event.keyCode - 49;	// charcode(49)="1"
-					var $list = $(document).find('dl.list_e2').first();
-					var $words = $list.find('dt').children('.fnt_e30');
-					
-					$words.eq(num).children().children().trigger('click');
-					event.preventDefault();
-					
-					break;
-			}
-		}
+		if (event.shiftKey){}
 		
-		else if (event.altKey){
-			switch(event.keyCode)
-			{
-				// alt + t : 테스트
-				case 84:  
-					test();
-					break; 
-			}
-		}
+		else if (event.altKey){}
 		
-		else if (event.ctrlKey) {
-		}
+		else if (event.ctrlKey) {}
 		
 		else {	// alt, ctrl, or shift key is not pressed.
 		
