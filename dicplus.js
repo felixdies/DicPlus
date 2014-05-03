@@ -65,16 +65,18 @@ function set_Naver_endic_listener(){
 }
 
 function set_Ozdic_listener(){
-	var tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+//	var tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	var dash = "- ";
 	
 	$(document).ready(function(){
-		// seperate lines
+		// seperate example sentence lines
 		$("i").each(function(){
 			var $html = $(this).html();
-			$html = $html.replace(/\.\s+(\w)/g, ".<br/>" + tab + "$1");
+			$html = $html.replace(/\.\s+(\w)/g, ".<br/>" + dash + "$1");
 			$(this).html($html);
 		});
-		
+	
+		/*
 		$("p:not(.word)").each(function(){
 			var $html = $(this).html();
 			
@@ -87,6 +89,8 @@ function set_Ozdic_listener(){
 			
 			$(this).width(700);
 		});
+		*/
+		
 	});
 	
 	$(document).keydown(function(event){
