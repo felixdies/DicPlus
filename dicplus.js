@@ -55,6 +55,12 @@ function set_Naver_endic_listener(){
 					event.preventDefault();
 					break;
 				
+				// alt + o : open other sites
+				case 79:
+					chrome.runtime.sendMessage({code:"open_ozdic"});
+					chrome.runtime.sendMessage({code:"open_thesaurus"});
+					break;
+				
 				// alt + t : 테스트
 				case 84:  
 					test();
@@ -99,7 +105,16 @@ function set_Ozdic_listener(){
 		
 		else if (event.shiftKey){}
 		
-		else if (event.altKey){}
+		else if (event.altKey){
+			switch(event.keyCode)
+			{
+			// alt + o : open other sites
+			case 79:
+				chrome.runtime.sendMessage({code:"open_naver"});
+				chrome.runtime.sendMessage({code:"open_thesaurus"});
+				break;
+			}
+		}
 		
 		else if (event.ctrlKey) {}
 		
@@ -126,7 +141,16 @@ function set_Thesaurus_listener() {
 	$(document).keydown(function(event){
 		if (event.shiftKey){}
 		
-		else if (event.altKey){}
+		else if (event.altKey){
+			switch(event.keyCode)
+			{
+			// alt + o : open other sites
+			case 79:
+				chrome.runtime.sendMessage({code:"open_naver"});
+				chrome.runtime.sendMessage({code:"open_ozdic"});
+				break;
+			}
+		}
 		
 		else if (event.ctrlKey) {}
 		

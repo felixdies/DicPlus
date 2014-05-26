@@ -7,6 +7,15 @@
 				sendResponse(tab[0].url);	// send a response after the listener returns
 			});
 		}
+		else if (request.code == "open_naver"){
+			chrome.tabs.create({url:"http://endic.naver.com/", active:false});
+		}
+		else if (request.code == "open_ozdic"){
+			chrome.tabs.create({url:"http://www.ozdic.com/", active:false});
+		}
+		else if (request.code == "open_thesaurus"){
+			chrome.tabs.create({url:"http://thesaurus.com/", active:false});
+		}
 		
 		/* The chrome.runtime.onMessage listener must return true
 		   if you want to send a response after the listener returns */
