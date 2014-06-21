@@ -55,6 +55,12 @@ function set_Naver_endic_listener(){
 					event.preventDefault();
 					break;
 				
+				// alt + m : 영영사전 / 한영, 영한사전 모드 변경
+				case 77:
+					var cbEndic = $(document).find('#dts_area').children('input');
+					cbEndic.trigger('click');
+					break;
+					
 				// alt + o : open other sites
 				case 79:
 					chrome.runtime.sendMessage({code:"open_ozdic"});
