@@ -10,16 +10,20 @@ function lg(object){
   */
 
 chrome.extension.sendMessage('get_curUrl',function(response) {
-		curUrl = response;
+	curUrl = response;
 		
-		if(/endic\.naver\.com/.test(curUrl))
-			set_Naver_endic_listener();
+	if(/endic\.naver\.com/.test(curUrl))
+		set_Naver_endic_listener();
 		
-		else if(/ozdic\.com/.test(curUrl))
-			set_Ozdic_listener();
+	else if(/ozdic\.com/.test(curUrl))
+		set_Ozdic_listener();
 		
-		else if(/thesaurus\.com/.test(curUrl))
-			set_Thesaurus_listener();
+	else if(/thesaurus\.com/.test(curUrl))
+		set_Thesaurus_listener();
+
+	set_common_listener();
+
+	create_shadow();
 });
 
 function set_Naver_endic_listener(){
@@ -66,11 +70,6 @@ function set_Naver_endic_listener(){
 					chrome.runtime.sendMessage({code:"open_ozdic"});
 					chrome.runtime.sendMessage({code:"open_thesaurus"});
 					break;
-				
-				// alt + t : 테스트
-				case 84:  
-					test();
-					break; 
 			}
 		}
 	});
@@ -171,6 +170,46 @@ function set_Thesaurus_listener() {
 	});
 }
 
-function test() {
-	lg("test");
+
+function set_common_listener() {
+
+    $(document).keydown(function (event) {
+        switch (event.keyCode) {
+            // "/"
+            case 191:
+                lg('ok');
+                event.preventDefault();
+                $('#dpShadow').show();
+                break;
+        }
+    });
 }
+
+
+function show_search_dialog() {
+
+}
+
+
+function search_word(word, dicCode) {
+
+}
+
+
+function create_shadow() {
+    var $shadow;
+    var imgURL = chrome.extension.getURL("semi_transparent.png");
+
+    $shadow = $("<img id='dpShadow' src="+imgURL+"></img>");
+    $shadow.css({
+        'position': 'absolute',
+        'height': 1000,
+        'width': 1000,
+        'top': 0,
+        'left': 0,
+        'z-index': 0
+    });
+    $('body').append($shadow);
+    $shadow.hide();
+}
+

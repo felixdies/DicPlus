@@ -15,6 +15,6 @@
 	"background": {
 		"scripts" : ["background.js"]
 	},
-	"web_accessible_resources": ["jquery-2.0.3.min.map"],
+	"web_accessible_resources": ["semi_transparent.png"],
 	"permissions": ["tabs", "storage", "contextMenus"]
 }
