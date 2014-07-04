@@ -1,4 +1,7 @@
-﻿var curUrl;	// 현재 페이지의 주소
+﻿/// <reference path="header.js" />
+
+
+var curUrl;	// 현재 페이지의 주소
 
 function lg(object){
 	console.log(object);
@@ -9,7 +12,7 @@ function lg(object){
   * Alt + Shift + T
   */
 
-chrome.extension.sendMessage('get_curUrl',function(response) {
+chrome.extension.sendMessage(REQ_GET_URL,function(response) {
 	curUrl = response;
 		
 	if(/endic\.naver\.com/.test(curUrl))
@@ -24,6 +27,7 @@ chrome.extension.sendMessage('get_curUrl',function(response) {
 	set_common_listener();
 
 	create_shadow();
+	create_search_dialog();
 });
 
 function set_Naver_endic_listener(){
@@ -175,28 +179,55 @@ function set_common_listener() {
 
     $(document).keydown(function (event) {
         switch (event.keyCode) {
-            // "/"
+            // "/" : 사전 검색 다이얼로그
             case 191:
                 event.preventDefault();
-                $('#dpShadow').show();
+                show_search_dialog();
                 break;
         }
     });
 }
 
 
-function show_search_dialog() {
+function create_search_dialog() {
+    var $dialog;
+    
+    
 
+    /* 사전 검색 다이얼로그 div */
+    $dialog = $("<div id='dpSearchDialog' style='position: absolute; top: 100px; left: 100px; z-index: 0; border:1px solid lightgray; font-size:13px; padding:6px'> <div align='center' style='font-size:17px; font-weight:bold; text-shadow:1px 1px silver'>사전 검색</div> <hr> <div style='margin-bottom:10px'> <span><b>검색할 단어</b></span> <input type='text' id='dpInputSearch'> </div> <div style='margin-bottom:10px'> shift + 1 : 네이버 한영사전(new) 검색<br> shift + 2 : 네이버 한영사전(old) 검색<br> shift + 3 : 네이버 영영사전(new) 검색<br> shift + 4 : 네이버 영영사전(old) 검색<br> shift + 5 : ozdic(연어) 검색<br> shift + 6 : thesaurus(동의어/유의어) 검색<br> </div> <div align='right'> <button type='button' id='dpBtnSearchDialogCancle'>취소(Esc)</button> </div> </div>");
+    $dialog.css({
+        'position': 'absolute',
+        'height': 1000,
+        'width': 1000,
+        'top': 0,
+        'left': 0,
+        'z-index': 0
+    });
+    $('body').append($dialog);
+    $dialog.hide();
+
+    /* 취소 버튼 */
+
+    /* 입력란 */
+
+    /* 검색 버튼 */
+
+    /* 사전 코드 표기란 */
+}
+
+function search_word(word, dicCode) {
+
+}
+
+
+function show_search_dialog() {
+    $('#dpShadow').show();
 }
 
 
 function hide_search_dialog() {
-    lg('hide');
-}
-
-
-function search_word(word, dicCode) {
-
+    $('#dpShadow').hide();
 }
 
 
