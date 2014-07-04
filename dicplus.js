@@ -177,7 +177,6 @@ function set_common_listener() {
         switch (event.keyCode) {
             // "/"
             case 191:
-                lg('ok');
                 event.preventDefault();
                 $('#dpShadow').show();
                 break;
@@ -188,6 +187,11 @@ function set_common_listener() {
 
 function show_search_dialog() {
 
+}
+
+
+function hide_search_dialog() {
+    lg('hide');
 }
 
 
@@ -211,5 +215,10 @@ function create_shadow() {
     });
     $('body').append($shadow);
     $shadow.hide();
+
+    // 이미지(다이얼로그 밖)를 클릭할 때의 이벤트
+    $shadow.click(function (event) {
+        hide_search_dialog();
+    });
 }
 
