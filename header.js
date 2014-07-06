@@ -9,3 +9,9 @@ var DIC_NAVER_KREN_NEW = 30;
 var DIC_NAVER_ENEN_NEW = 40;
 var DIC_OZDIC          = 50;
 var DIC_TEHSAURUS      = 60;
+
+
+function lg(object) {
+    console.log(object);
+}
+

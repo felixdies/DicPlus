@@ -1,34 +1,35 @@
 ﻿/// <reference path="header.js" />
 
-
-var curUrl;	// 현재 페이지의 주소
-
-function lg(object){
-	console.log(object);
-}
-
 /** original shortcur keys(Alt) of Chrome
   * Alt + D, E, F
   * Alt + Shift + T
   */
 
+var curUrl;	// 현재 페이지의 주소
+var curDicCode; // 현재 사전
+
 chrome.extension.sendMessage(REQ_GET_URL,function(response) {
 	curUrl = response;
 		
-	if(/endic\.naver\.com/.test(curUrl))
-		set_Naver_endic_listener();
-		
-	else if(/ozdic\.com/.test(curUrl))
-		set_Ozdic_listener();
-		
-	else if(/thesaurus\.com/.test(curUrl))
-		set_Thesaurus_listener();
+	if (/endic\.naver\.com/.test(curUrl)) {
+	    set_Naver_endic_listener();
+        
+	}
+
+	else if (/ozdic\.com/.test(curUrl)) {
+	    set_Ozdic_listener();
+	}
+
+	else if (/thesaurus\.com/.test(curUrl)) {
+	    set_Thesaurus_listener();
+	}
 
 	set_common_listener();
 
 	create_shadow();
 	create_search_dialog();
 });
+
 
 function set_Naver_endic_listener(){
 	$(document).keydown(function(event){
@@ -192,28 +193,28 @@ function set_common_listener() {
 function create_search_dialog() {
     var $dialog;
     
-    
-
     /* 사전 검색 다이얼로그 div */
-    $dialog = $("<div id='dpSearchDialog' style='position: absolute; top: 100px; left: 100px; z-index: 0; border:1px solid lightgray; font-size:13px; padding:6px'> <div align='center' style='font-size:17px; font-weight:bold; text-shadow:1px 1px silver'>사전 검색</div> <hr> <div style='margin-bottom:10px'> <span><b>검색할 단어</b></span> <input type='text' id='dpInputSearch'> </div> <div style='margin-bottom:10px'> shift + 1 : 네이버 한영사전(new) 검색<br> shift + 2 : 네이버 한영사전(old) 검색<br> shift + 3 : 네이버 영영사전(new) 검색<br> shift + 4 : 네이버 영영사전(old) 검색<br> shift + 5 : ozdic(연어) 검색<br> shift + 6 : thesaurus(동의어/유의어) 검색<br> </div> <div align='right'> <button type='button' id='dpBtnSearchDialogCancle'>취소(Esc)</button> </div> </div>");
-    $dialog.css({
-        'position': 'absolute',
-        'height': 1000,
-        'width': 1000,
-        'top': 0,
-        'left': 0,
-        'z-index': 0
-    });
+    $dialog = $("<div id='dpSearchDialog' style='position: absolute; width: 300px; height: 200px; z-index: 0; border: 1px solid lightgray; font-size: 13px; padding: 6px; background-color: white; z-index: 100000'>     <div style='text-align:center; font-size: 17px; font-weight: bold; text-shadow: 1px 1px silver'>사전 검색</div>          <hr style='display:block; margin:5px;'>          <div style='margin-bottom: 10px'><span><b>검색할 단어</b></span>         <input type='text' id='dpInputSearch'>     </div>     <div style='margin-bottom: 10px;'>shift + 1 : 네이버 한영사전(new) 검색<br>         shift + 2 : 네이버 한영사전(old) 검색<br>         shift + 3 : 네이버 영영사전(new) 검색<br>         shift + 4 : 네이버 영영사전(old) 검색<br>         shift + 5 : ozdic(연어) 검색<br>         shift + 6 : thesaurus(동의어/유의어) 검색<br>     </div>     <div style='text-align:right;'>         <button type='button' id='dpBtnCancleSearch' style=''>             취소(Esc)         </button>     </div> </div> ");
     $('body').append($dialog);
     $dialog.hide();
 
     /* 취소 버튼 */
+    $('#dpBtnCancleSearch').click(function (event) {
+        hide_search_dialog();
+    });
 
     /* 입력란 */
+    $('#dpInputSearch').keydown(function (event) {
+        if (event.shiftKey) {
 
-    /* 검색 버튼 */
-
-    /* 사전 코드 표기란 */
+        }
+        else {
+            if (event.keyCode == 27) { // esc
+                hide_search_dialog();
+            }
+            event.stopPropagation();
+        }
+    });
 }
 
 function search_word(word, dicCode) {
@@ -222,12 +223,28 @@ function search_word(word, dicCode) {
 
 
 function show_search_dialog() {
-    $('#dpShadow').show();
+    var $shadow = $('#dpShadow');
+    var $dialog = $('#dpSearchDialog');
+    
+    $shadow.css({
+        'height': '100%',
+        'width': '100%'
+    });
+    $shadow.show();
+
+    $dialog.css({
+        'top': '40%',
+        'left': '40%'
+    });
+    $dialog.show();
+
+    $('#dpInputSearch').focus();
 }
 
 
 function hide_search_dialog() {
     $('#dpShadow').hide();
+    $('#dpSearchDialog').hide();
 }
 
 
@@ -238,11 +255,9 @@ function create_shadow() {
     $shadow = $("<img id='dpShadow' src="+imgURL+"></img>");
     $shadow.css({
         'position': 'absolute',
-        'height': 1000,
-        'width': 1000,
         'top': 0,
         'left': 0,
-        'z-index': 0
+        'z-index': 99999
     });
     $('body').append($shadow);
     $shadow.hide();
