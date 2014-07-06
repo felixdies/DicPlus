@@ -5,33 +5,49 @@
   * Alt + Shift + T
   */
 
-var curUrl;	// 현재 페이지의 주소
 var curDicCode; // 현재 사전
+var curSearchWord; // 현재 검색 단어
+var $searchField; // 검색란
 
-chrome.extension.sendMessage(REQ_GET_URL,function(response) {
-	curUrl = response;
-		
-	if (/endic\.naver\.com/.test(curUrl)) {
-	    set_Naver_endic_listener();
-        
-	}
 
-	else if (/ozdic\.com/.test(curUrl)) {
-	    set_Ozdic_listener();
-	}
+chrome.runtime.sendMessage(REQ_OPEN_NEW_PAGE, function (response) {
+    switch (response.dicCode) {
+        case DIC_NAVER_NEW:
+            set_Naver_new_listener();
+            break;
 
-	else if (/thesaurus\.com/.test(curUrl)) {
-	    set_Thesaurus_listener();
-	}
+        case DIC_NAVER_KREN_OLD:
+            break;
 
-	set_common_listener();
+        case DIC_NAVER_ENEN_OLD:
+            break;
 
-	create_shadow();
-	create_search_dialog();
+        case DIC_OZDIC:
+            $searchField = $(document).find('form#search').children('[type=text]');
+
+            // ozdic 은 검색란에 검색 단어를 입력 해 준다.
+            curSearchWord = response.search_word;
+            $searchField.val(curSearchWord);
+            $searchField.select();
+
+            set_Ozdic_listener();
+            break;
+
+        case DIC_TEHSAURUS:
+            $searchField = $(document).find('input#q');
+
+            set_Thesaurus_listener();
+            break;
+    }
+
+    set_common_listener();
+
+    create_shadow();
+    create_search_dialog();
 });
 
 
-function set_Naver_endic_listener(){
+function set_Naver_new_listener(){
 	$(document).keydown(function(event){
 
 		if (event.shiftKey && event.altKey){
@@ -81,7 +97,6 @@ function set_Naver_endic_listener(){
 }
 
 function set_Ozdic_listener(){
-//	var tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 	var dash = "- ";
 	
 	$(document).ready(function(){
@@ -92,55 +107,30 @@ function set_Ozdic_listener(){
 			$(this).html($html);
 		});
 	
-		
 		$("p:not(.word)").each(function(){
 			var $html = $(this).html();
 			
 			// 맨 앞의 | 삭제
 			$html = $html.replace(/<b[^>]+>\| /g, "<b>");
-			//$html = $html.replace(/<sup>(\s[^1])/g, "<br/><sup>$1");
-			//$html = $html.replace(/\|/g, "");
-			//$html = $html.replace(/<i>/g, "<br/><i>" + tab);
-
 			$(this).html($html);
-			
-			//$(this).width(700);
 		});
-		
-		
 	});
 	
 	$(document).keydown(function(event){
-		
-		if (event.shiftKey && event.altKey){}
-		
-		else if (event.shiftKey){}
-		
-		else if (event.altKey){
-			switch(event.keyCode)
-			{
-			// alt + o : open other sites
-			case 79:
-				chrome.runtime.sendMessage({code:"open_naver"});
-				chrome.runtime.sendMessage({code:"open_thesaurus"});
-				break;
-			}
-		}
-		
-		else if (event.ctrlKey) {}
-		
-		else {	// alt, ctrl, or shift key is not pressed.
-		
-			// arrow, page up/down, home, end keys
-			if (!(event.keyCode > 32 && event.keyCode < 41))	
-				// move to the input textfield
-				$(document).find('form#search').children('[type=text]').focus();
+	    if (event.shiftKey);
+	    else if (event.altKey);
+	    else if (event.ctrlKey);
+
+	    else {	// alt, ctrl, or shift key is not pressed.
+		    // arrow, page up/down, home, end keys
+		    if (!(event.keyCode > 32 && event.keyCode < 41))
+		        // move to the input textfield
+		        $searchField.focus();
 		}
 	});
 }
 
 function set_Thesaurus_listener() {
-	
 	// hide ads
 	$(document).ready(function(){
 		$(document).find('div.banner').each(function(){
@@ -150,34 +140,21 @@ function set_Thesaurus_listener() {
 	});
 	
 	$(document).keydown(function(event){
-		if (event.shiftKey){}
-		
-		else if (event.altKey){
-			switch(event.keyCode)
-			{
-			// alt + o : open other sites
-			case 79:
-				chrome.runtime.sendMessage({code:"open_naver"});
-				chrome.runtime.sendMessage({code:"open_ozdic"});
-				break;
-			}
-		}
-		
-		else if (event.ctrlKey) {}
-		
-		else {	// alt, ctrl, or shift key is not pressed.
-		
+	    if (event.shiftKey);
+	    else if (event.altKey);
+	    else if (event.ctrlKey);
+
+	    else {	// alt, ctrl, or shift key is not pressed.
 			// arrow, page up/down, home, end keys
 			if (!(event.keyCode > 32 && event.keyCode < 41))	
 				// move to the input textfield
-				$(document).find('input#q').focus();
+				$searchField.focus();
 		}
 	});
 }
 
 
 function set_common_listener() {
-
     $(document).keydown(function (event) {
         switch (event.keyCode) {
             // "/" : 사전 검색 다이얼로그
@@ -189,12 +166,11 @@ function set_common_listener() {
     });
 }
 
-
 function create_search_dialog() {
     var $dialog;
     
     /* 사전 검색 다이얼로그 div */
-    $dialog = $("<div id='dpSearchDialog' style='position: absolute; width: 300px; height: 200px; z-index: 0; border: 1px solid lightgray; font-size: 13px; padding: 6px; background-color: white; z-index: 100000'>     <div style='text-align:center; font-size: 17px; font-weight: bold; text-shadow: 1px 1px silver'>사전 검색</div>          <hr style='display:block; margin:5px;'>          <div style='margin-bottom: 10px'><span><b>검색할 단어</b></span>         <input type='text' id='dpInputSearch'>     </div>     <div style='margin-bottom: 10px;'>shift + 1 : 네이버 한영사전(new) 검색<br>         shift + 2 : 네이버 한영사전(old) 검색<br>         shift + 3 : 네이버 영영사전(new) 검색<br>         shift + 4 : 네이버 영영사전(old) 검색<br>         shift + 5 : ozdic(연어) 검색<br>         shift + 6 : thesaurus(동의어/유의어) 검색<br>     </div>     <div style='text-align:right;'>         <button type='button' id='dpBtnCancleSearch' style=''>             취소(Esc)         </button>     </div> </div> ");
+    $dialog = $("<div id='dpSearchDialog' style='position: absolute; width: 300px; height: 200px; z-index: 0; border: 1px solid lightgray; font-size: 13px; padding: 6px; background-color: white; z-index: 100000'> <div style='text-align:center; font-size: 17px; font-weight: bold; text-shadow: 1px 1px silver'>사전 검색</div> <hr style='display:block; margin:5px;'> <div style='text-align:left; margin-bottom: 10px'><span><b>검색할 단어</b></span> <input type='text' id='dpInputSearch'> </div> <div style='text-align:left; margin-bottom: 10px;'>shift + 1 : 네이버 한영사전(new) 검색<br> shift + 2 : 네이버 영영사전(new) 검색<br> shift + 3 : 네이버 한영사전(old) 검색<br> shift + 4 : 네이버 영영사전(old) 검색<br> shift + 5 : ozdic.com(연어) 검색<br> shift + 6 : thesaurus.com(동의어/유의어) 검색<br> </div> <div style='text-align:right;'> <button type='button' id='dpBtnCancleSearch' style=''> 취소(Esc) </button> </div> </div> ");
     $('body').append($dialog);
     $dialog.hide();
 
@@ -206,7 +182,40 @@ function create_search_dialog() {
     /* 입력란 */
     $('#dpInputSearch').keydown(function (event) {
         if (event.shiftKey) {
+            var dicCode=0;
+            event.stopPropagation();
+            
+            switch (event.keyCode) {
+                // shift + 1 : 네이버 한영사전(new)
+                case 49:
+                    dicCode = DIC_NAVER_KREN_NEW;
+                    break;
+                // shift + 2 : 네이버 영영사전(new)
+                case 50:
+                    dicCode = DIC_NAVER_ENEN_NEW;
+                    break;
+                // shift + 3 : 네이버 한영사전(old)
+                case 51:
+                    dicCode = DIC_NAVER_KREN_OLD;
+                    break;
+                // shift + 4 : 네이버 영영사전(old)
+                case 52:
+                    dicCode = DIC_NAVER_ENEN_OLD
+                    break;
+                // shift + 5 : ozdic
+                case 53:
+                    dicCode = DIC_OZDIC;
+                    break;
+                // shift + 6 : thesaurus
+                case 54:
+                    dicCode = DIC_TEHSAURUS;
+                    break;
+            }
 
+            if (dicCode) {
+                search_word($('#dpInputSearch').val(), dicCode);
+                hide_search_dialog();
+            }
         }
         else {
             if (event.keyCode == 27) { // esc
@@ -218,7 +227,7 @@ function create_search_dialog() {
 }
 
 function search_word(word, dicCode) {
-
+    lg("word : " + word + "  dicCode : " + dicCode);
 }
 
 

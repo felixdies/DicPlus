@@ -8,7 +8,7 @@
 	},
 	"content_scripts": [
 		{
-		"matches": ["http://endic.naver.com/*", "http://www.ozdic.com/*", "http://thesaurus.com/*"],
+		"matches": ["http://endic.naver.com/*", "http://endic2009.naver.com/*", "http://eedic2009.naver.com/*", "http://www.ozdic.com/*", "http://thesaurus.com/*"],
 		"js": ["jquery-2.1.1.min.js", "header.js", "dicplus.js"]
 		}
 	],
@@ -16,5 +16,5 @@
 		"scripts" : ["header.js", "background.js"]
 	},
 	"web_accessible_resources": ["semi_transparent.png"],
-	"permissions": ["tabs", "storage", "contextMenus"]
+	"permissions": ["tabs"]
 }
