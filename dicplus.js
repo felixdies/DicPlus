@@ -14,7 +14,13 @@ chrome.extension.sendMessage('get_curUrl',function(response) {
 		
 		if(/endic\.naver\.com/.test(curUrl))
 			set_Naver_endic_listener();
-		
+    
+		else if (/endic2009\.naver\.com/.test(curUrl))
+		    set_Naver_old_endic_listener();
+
+		else if (/eedic2009\.naver\.com/.test(curUrl))
+		    set_Naver_old_eedic_listener();
+
 		else if(/ozdic\.com/.test(curUrl))
 			set_Ozdic_listener();
 		
@@ -74,6 +80,49 @@ function set_Naver_endic_listener(){
 			}
 		}
 	});
+}
+
+function set_Naver_old_endic_listener() {
+    $(document).keydown(function (event) {
+
+        if (event.shiftKey && event.altKey) {
+        }
+        else if (event.shiftKey) {
+            switch (event.keyCode) {
+                // shift + 1,2,3,4,5	: n 번째 단어 선택
+                case 49: case 50: case 51: case 52: case 53:
+                    var num = event.keyCode - 49;
+                    var $words = $(document).find("a.bl-uu01");
+                    var href = $words.eq(num).attr('href');
+
+                    window.location.href = href;
+                    event.preventDefault();
+
+                    break;
+            }
+        }
+        else if (event.altKey) {
+            switch (event.keyCode) {
+                // alt + 1,2,3,4,5 : 전체,단어,관용어,예문,본문,뉴스,TOEIC
+                case 49: case 50: case 51: case 52: case 53: case 54: case 55:
+                    var num = event.keyCode - 49;
+                    var href = $(document).find('a.or-nu01, a.bb-uu02').eq(num).attr('href');
+
+                    window.location.href = href;
+                    event.preventDefault();
+                    break;
+
+                // alt + o : open other sites
+                case 79:
+                    chrome.runtime.sendMessage({ code: "open_ozdic" });
+                    chrome.runtime.sendMessage({ code: "open_thesaurus" });
+                    break;
+            }
+        }
+    });
+}
+
+function set_Naver_old_eedic_listener() {
 }
 
 function set_Ozdic_listener(){

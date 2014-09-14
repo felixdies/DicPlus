@@ -1,6 +1,6 @@
 ﻿{
 	"name": "DicPlus",
-	"version": "0.2.10",
+	"version": "0.2.11",
 	"manifest_version": 2,
 	"description": "네이버, ozdic, thesaurus 영어사전을 편하게 이용할 수 있도록 여러 단축키를 제공합니다.",
 	"icons": {
@@ -8,7 +8,7 @@
 	},
 	"content_scripts": [
 		{
-		"matches": ["http://endic.naver.com/*", "http://www.ozdic.com/*", "http://thesaurus.com/*"],
+		"matches": ["http://endic.naver.com/*", "http://www.ozdic.com/*", "http://thesaurus.com/*", "http://endic2009.naver.com/*", "http://eedic2009.naver.com/*"],
 		"js": ["jquery-2.1.1.min.js", "dicplus.js"]
 		}
 	],
